@@ -23,6 +23,7 @@
 #import "NSObject+OPEnumerable.h"
 
 #define OPAssertEnumerable  NSAssert([self conformsToProtocol:@protocol(NSFastEnumeration)], @"Object isn't enumerable.");
+#define OPMutableSelfContainer()  [[[[self class] superclass] new] mutableCopy]
 
 @implementation NSObject (OPEnumerable)
 
@@ -30,7 +31,7 @@
     OPAssertEnumerable
     
     BOOL isDictionary = [[self class] isSubclassOfClass:[NSDictionary class]];
-    id retVal = isDictionary ? [NSMutableDictionary new] : [[[self class] new] mutableCopy];
+    id retVal = OPMutableSelfContainer();
     
     for (id obj in (id<NSFastEnumeration>)self)
     {
@@ -112,7 +113,7 @@
     OPAssertEnumerable
     
     BOOL isDictionary = [[self class] isSubclassOfClass:[NSDictionary class]];
-    id retVal = isDictionary ? [NSMutableDictionary new] : [[[self class] new] mutableCopy];
+    id retVal = OPMutableSelfContainer();
     
     for (id obj in (id<NSFastEnumeration>)self)
     {
