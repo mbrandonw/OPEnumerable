@@ -30,6 +30,7 @@
 -(int) reducei:(int)initial :(int(^)(int sum, id obj))reducer;
 -(float) reducef:(float)initial :(float(^)(float sum, id obj))reducer;
 -(double) reduced:(double)initial :(double(^)(double sum, id obj))reducer;
+
 -(id) inject:(id)initial :(id(^)(id sum, id obj))injector;
 -(int) injecti:(int)initial :(int(^)(int sum, id obj))injector;
 -(float) injectf:(float)initial :(float(^)(float sum, id obj))injector;
