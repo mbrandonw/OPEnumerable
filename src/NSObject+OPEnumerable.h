@@ -24,7 +24,13 @@
 
 @interface NSObject (OPEnumerable)
 
+-(BOOL) all:(BOOL(^)(id obj))block;
+-(BOOL) any:(BOOL(^)(id obj))block;
+-(BOOL) none:(BOOL(^)(id obj))block;
+-(BOOL) one:(BOOL(^)(id obj))block;
+
 -(id) map:(id(^)(id obj))mapper;
+-(id) collect:(id(^)(id obj))collector;
 
 -(id) reduce:(id)initial :(id(^)(id sum, id obj))reducer;
 -(int) reducei:(int)initial :(int(^)(int sum, id obj))reducer;
@@ -41,5 +47,10 @@
 
 -(id) findAll:(BOOL(^)(id obj))finder;
 -(id) select:(BOOL(^)(id obj))selector;
+
+-(id) reject:(BOOL(^)(id obj))rejector;
+
+// Returns a dictionary mapping YES/NO to all objects for which partitioner returns YES/NO.
+-(NSDictionary*) partition:(BOOL(^)(id obj))partitioner;
 
 @end

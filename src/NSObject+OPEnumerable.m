@@ -27,6 +27,45 @@
 
 @implementation NSObject (OPEnumerable)
 
+-(BOOL) all:(BOOL(^)(id obj))block {
+    OPAssertEnumerable
+    
+    for (id obj in (id<NSFastEnumeration>)self)
+        if (! block(obj))
+            return NO;
+    return YES;
+}
+
+-(BOOL) any:(BOOL(^)(id obj))block {
+    OPAssertEnumerable
+    
+    for (id obj in (id<NSFastEnumeration>)self)
+        if (block(obj))
+            return YES;
+    return NO;
+}
+
+-(BOOL) none:(BOOL(^)(id obj))block {
+    OPAssertEnumerable
+    
+    for (id obj in (id<NSFastEnumeration>)self)
+        if (block(obj))
+            return NO;
+    return YES;
+}
+
+-(BOOL) one:(BOOL(^)(id obj))block {
+    OPAssertEnumerable
+    
+    BOOL retVal = NO;
+    for (id obj in (id<NSFastEnumeration>)self)
+    {
+        if (retVal && (retVal = block(obj)))
+            return NO;
+    }
+    return retVal;
+}
+
 -(id) map:(id(^)(id))mapper {
     OPAssertEnumerable
     
@@ -41,6 +80,10 @@
             [retVal addObject:mapper(obj)];
     }
     return retVal;
+}
+
+-(id) collect:(id(^)(id obj))collector {
+    return [self map:collector];
 }
 
 -(id) reduce:(id)initial :(id(^)(id, id))reducer {
@@ -79,16 +122,6 @@
     return retVal;
 }
 
--(id) find:(BOOL(^)(id))finder {
-    OPAssertEnumerable
-    
-    for (id obj in (id<NSFastEnumeration>)self)
-        if (finder(obj))
-            return obj;
-    
-    return nil;
-}
-
 -(id) inject:(id)initial :(id(^)(id sum, id obj))injector {
     return [self reduce:initial :injector];
 }
@@ -103,6 +136,15 @@
 
 -(double) injectd:(double)initial :(double(^)(double sum, id obj))injector {
     return [self reduced:initial :injector];
+}
+
+-(id) find:(BOOL(^)(id))finder {
+    OPAssertEnumerable
+    
+    for (id obj in (id<NSFastEnumeration>)self)
+        if (finder(obj))
+            return obj;
+    return nil;
 }
 
 -(id) detect:(BOOL (^)(id))detector {
@@ -130,6 +172,21 @@
 
 -(id) select:(BOOL(^)(id))selector {
     return [self findAll:selector];
+}
+
+-(id) reject:(BOOL(^)(id obj))rejector {
+    return [self findAll:^BOOL(id obj) {
+        return ! rejector(obj);
+    }];
+}
+
+-(NSDictionary*) partition:(BOOL(^)(id obj))partitioner {
+    OPAssertEnumerable
+    
+    NSMutableDictionary *retVal = [@{ @(YES) : [@[] mutableCopy], @(NO) : [@[] mutableCopy] } mutableCopy];
+    for (id obj in (id<NSFastEnumeration>)self)
+        [[retVal objectForKey:@(partitioner(obj))] addObject:obj];
+    return retVal;
 }
 
 @end
