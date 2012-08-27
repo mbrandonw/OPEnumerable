@@ -24,6 +24,8 @@
 
 @interface NSObject (OPEnumerable)
 
+-(void) each:(void(^)(id obj))iterator;
+
 -(BOOL) all:(BOOL(^)(id obj))block;
 -(BOOL) any:(BOOL(^)(id obj))block;
 -(BOOL) none:(BOOL(^)(id obj))block;

@@ -27,6 +27,13 @@
 
 @implementation NSObject (OPEnumerable)
 
+-(void) each:(void(^)(id obj))iterator {
+    OPAssertEnumerable
+    
+    for (id obj in (id<NSFastEnumeration>)self)
+        iterator(obj);
+}
+
 -(BOOL) all:(BOOL(^)(id obj))block {
     OPAssertEnumerable
     
