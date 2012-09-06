@@ -24,6 +24,7 @@
 
 #define OPAssertEnumerable  NSAssert([self conformsToProtocol:@protocol(NSFastEnumeration)], @"Object isn't enumerable.");
 #define OPMutableSelfContainer()  [[[[self class] superclass] new] mutableCopy]
+#define OPContainerIsDictionaryLike()  [self respondsToSelector:@selector(setObject:forKey:)]
 
 @implementation NSObject (OPEnumerable)
 
@@ -76,7 +77,7 @@
 -(id) map:(id(^)(id))mapper {
     OPAssertEnumerable
     
-    BOOL isDictionary = [[self class] isSubclassOfClass:[NSDictionary class]];
+    BOOL isDictionary = OPContainerIsDictionaryLike();
     id retVal = OPMutableSelfContainer();
     
     for (id obj in (id<NSFastEnumeration>)self)
@@ -161,7 +162,7 @@
 -(id) findAll:(BOOL(^)(id))finder {
     OPAssertEnumerable
     
-    BOOL isDictionary = [[self class] isSubclassOfClass:[NSDictionary class]];
+    BOOL isDictionary = OPContainerIsDictionaryLike();
     id retVal = OPMutableSelfContainer();
     
     for (id obj in (id<NSFastEnumeration>)self)
@@ -185,6 +186,22 @@
     return [self findAll:^BOOL(id obj) {
         return ! rejector(obj);
     }];
+}
+
+-(id) compact {
+    OPAssertEnumerable
+    
+    BOOL isDictionary = OPContainerIsDictionaryLike();
+    id retVal = OPMutableSelfContainer();
+    
+    for (id obj in (id<NSFastEnumeration>)self)
+    {
+        if (isDictionary && [retVal objectForKey:obj] != [NSNull null])
+            [retVal setObject:obj forKey:obj];
+        else if (! isDictionary && obj != [NSNull null])
+            [retVal addObject:obj];
+    }
+    return retVal;
 }
 
 -(NSDictionary*) partition:(BOOL(^)(id obj))partitioner {

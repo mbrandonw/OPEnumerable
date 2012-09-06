@@ -52,6 +52,8 @@
 
 -(id) reject:(BOOL(^)(id obj))rejector;
 
+-(id) compact;
+
 // Returns a dictionary mapping YES/NO to all objects for which partitioner returns YES/NO.
 -(NSDictionary*) partition:(BOOL(^)(id obj))partitioner;
 
