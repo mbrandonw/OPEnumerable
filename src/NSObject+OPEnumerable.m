@@ -192,14 +192,14 @@
     OPAssertEnumerable
     
     BOOL isDictionary = OPContainerIsDictionaryLike();
-    id retVal = OPMutableSelfContainer();
+    id retVal = [self mutableCopy];
     
     for (id obj in (id<NSFastEnumeration>)self)
     {
-        if (isDictionary && [retVal objectForKey:obj] != [NSNull null])
-            [retVal setObject:obj forKey:obj];
-        else if (! isDictionary && obj != [NSNull null])
-            [retVal addObject:obj];
+        if (isDictionary && [retVal objectForKey:obj] == [NSNull null])
+            [retVal removeObjectForKey:obj];
+        else if (! isDictionary && obj == [NSNull null])
+            [retVal removeObjectForKey:obj];
     }
     return retVal;
 }
