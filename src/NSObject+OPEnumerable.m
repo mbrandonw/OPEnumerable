@@ -178,10 +178,6 @@
     return retVal;
 }
 
--(id) select:(BOOL(^)(id))selector {
-    return [self findAll:selector];
-}
-
 -(id) reject:(BOOL(^)(id obj))rejector {
     return [self findAll:^BOOL(id obj) {
         return ! rejector(obj);
