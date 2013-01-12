@@ -24,7 +24,7 @@
 
 #define OPAssertEnumerable  NSAssert([self conformsToProtocol:@protocol(NSFastEnumeration)], @"Object isn't enumerable.");
 #define OPMutableSelfContainer()  [[[[self class] superclass] new] mutableCopy]
-#define OPContainerIsDictionaryLike()  [self respondsToSelector:@selector(setObject:forKey:)]
+#define OPContainerIsDictionaryLike()  [self respondsToSelector:@selector(objectForKey:)]
 
 @implementation NSObject (OPEnumerable)
 
