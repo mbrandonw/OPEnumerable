@@ -188,7 +188,7 @@
     OPAssertEnumerable
     
     BOOL isDictionary = OPContainerIsDictionaryLike();
-    id retVal = [self mutableCopy];
+    id retVal = OPMutableSelfContainer();
     
     for (id obj in (id<NSFastEnumeration>)self)
     {
@@ -196,6 +196,36 @@
             [retVal removeObjectForKey:obj];
         else if (! isDictionary && obj == [NSNull null])
             [retVal removeObjectForKey:obj];
+    }
+    return retVal;
+}
+
+-(id) max {
+    OPAssertEnumerable
+    
+    BOOL isDictionary = OPContainerIsDictionaryLike();
+    id retVal = [self find:^BOOL(id obj) { return YES; }];
+    for (id obj in (id<NSFastEnumeration>)self) {
+        if (isDictionary && [[(id)self objectForKey:obj] compare:retVal] == NSOrderedDescending) {
+            retVal = [(id)self objectForKey:obj];
+        } else if (! isDictionary && [obj compare:retVal] == NSOrderedDescending) {
+            retVal = obj;
+        }
+    }
+    return retVal;
+}
+
+-(id) min {
+    OPAssertEnumerable
+    
+    BOOL isDictionary = OPContainerIsDictionaryLike();
+    id retVal = [self find:^BOOL(id obj) { return YES; }];
+    for (id obj in (id<NSFastEnumeration>)self) {
+        if (isDictionary && [[(id)self objectForKey:obj] compare:retVal] == NSOrderedAscending) {
+            retVal = [(id)self objectForKey:obj];
+        } else if (! isDictionary && [obj compare:retVal] == NSOrderedAscending) {
+            retVal = obj;
+        }
     }
     return retVal;
 }
