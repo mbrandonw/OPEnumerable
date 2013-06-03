@@ -89,9 +89,9 @@
 
   for (id obj in (id<NSFastEnumeration>)self) {
     if (isDictionary) {
-      [retVal setObject:mapper(obj) forKey:obj];
+      [retVal setObject:mapper(obj) ?: [NSNull null] forKey:obj];
     } else {
-      [retVal addObject:mapper(obj)];
+      [retVal addObject:mapper(obj) ?: [NSNull null]];
     }
   }
   return retVal;
