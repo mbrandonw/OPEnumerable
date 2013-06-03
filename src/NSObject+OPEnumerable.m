@@ -206,7 +206,7 @@
     if (isDictionary && [retVal objectForKey:obj] == [NSNull null]) {
       [retVal removeObjectForKey:obj];
     } else if (! isDictionary && obj == [NSNull null]) {
-      [retVal removeObjectForKey:obj];
+      [retVal removeObject:obj];
     }
   }
   return retVal;
