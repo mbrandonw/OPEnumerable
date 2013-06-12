@@ -56,7 +56,10 @@
 -(id) max;
 -(id) min;
 
-// Returns a dictionary mapping YES/NO to all objects for which partitioner returns YES/NO.
+/**
+ * Partition the object into two sets.
+ * \return A dictionary mapping YES/NO to all objects for which partitioner returns YES/NO.
+ */
 -(NSDictionary*) partition:(BOOL(^)(id obj))partitioner;
 
 @end

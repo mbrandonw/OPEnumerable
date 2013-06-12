@@ -245,7 +245,10 @@
 -(NSDictionary*) partition:(BOOL(^)(id obj))partitioner {
   OPAssertEnumerable
 
-  NSMutableDictionary *retVal = [@{ @(YES) : [@[] mutableCopy], @(NO) : [@[] mutableCopy] } mutableCopy];
+  NSDictionary *retVal = @{
+                           @(YES) : [NSMutableSet new],
+                           @(NO) : [NSMutableSet new]
+                           };
   for (id obj in (id<NSFastEnumeration>)self) {
     [[retVal objectForKey:@(partitioner(obj))] addObject:obj];
   }
