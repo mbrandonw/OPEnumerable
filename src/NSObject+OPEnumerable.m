@@ -172,6 +172,10 @@
   return [self find:detector];
 }
 
+-(id) filter:(BOOL(^)(id obj))filter {
+  return [self find:filter];
+}
+
 -(id) findAll:(BOOL(^)(id))finder {
   OPAssertEnumerable
 

@@ -46,6 +46,7 @@
 
 -(id) find:(BOOL(^)(id obj))finder;
 -(id) detect:(BOOL(^)(id obj))detector;
+-(id) filter:(BOOL(^)(id obj))filter;
 
 -(id) findAll:(BOOL(^)(id obj))finder;
 
