@@ -172,10 +172,6 @@
   return [self find:detector];
 }
 
--(id) filter:(BOOL(^)(id obj))filter {
-  return [self find:filter];
-}
-
 -(id) findAll:(BOOL(^)(id))finder {
   OPAssertEnumerable
 
@@ -185,13 +181,17 @@
   for (id obj in (id<NSFastEnumeration>)self) {
     if (finder(obj)) {
       if (isDictionary) {
-        [retVal setObject:obj forKey:obj];
+        [retVal setObject:[(id)self objectForKey:obj] forKey:obj];
       } else {
         [retVal addObject:obj];
       }
     }
   }
   return retVal;
+}
+
+-(id) filter:(BOOL(^)(id obj))filter {
+  return [self findAll:filter];
 }
 
 -(id) reject:(BOOL(^)(id obj))rejector {
