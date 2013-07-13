@@ -29,10 +29,24 @@
 @implementation NSObject (OPEnumerable)
 
 -(void) each:(void(^)(id obj))iterator {
+  [self eachWithIndex:^(id obj, id index) {
+    iterator(obj);
+  }];
+}
+
+-(void) eachWithIndex:(void(^)(id obj, id index))iterator {
   OPAssertEnumerable
 
+  BOOL isDictionary = OPContainerIsDictionaryLike();
+  NSUInteger index = 0;
+
   for (id obj in (id<NSFastEnumeration>)self) {
-    iterator(obj);
+    if (isDictionary) {
+      iterator([(id)self objectForKey:obj], obj);
+    } else {
+      iterator(obj, @(index));
+      index++;
+    }
   }
 }
 
