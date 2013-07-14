@@ -33,7 +33,9 @@
 -(BOOL) one:(BOOL(^)(id obj))block;
 
 -(id) map:(id(^)(id obj))mapper;
+-(id) mapWithIndex:(id(^)(id obj, id index))mapper;
 -(id) collect:(id(^)(id obj))collector;
+-(id) collectWithIndex:(id(^)(id obj, id index))collector;
 
 -(id) reduce:(id)initial :(id(^)(id sum, id obj))reducer;
 -(int) reducei:(int)initial :(int(^)(int sum, id obj))reducer;

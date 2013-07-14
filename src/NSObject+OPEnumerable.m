@@ -96,16 +96,24 @@
 }
 
 -(id) map:(id(^)(id))mapper {
+  return [self mapWithIndex:^id(id obj, id index) {
+    return mapper(obj);
+  }];
+}
+
+-(id) mapWithIndex:(id(^)(id obj, id index))mapper {
   OPAssertEnumerable
 
   BOOL isDictionary = OPContainerIsDictionaryLike();
   id retVal = OPMutableSelfContainer();
+  NSUInteger index = 0;
 
   for (id obj in (id<NSFastEnumeration>)self) {
     if (isDictionary) {
-      [retVal setObject:mapper(obj) ?: [NSNull null] forKey:obj];
+      [retVal setObject:mapper([(id)self objectForKey:obj], obj) ?: [NSNull null] forKey:obj];
     } else {
-      [retVal addObject:mapper(obj) ?: [NSNull null]];
+      [retVal addObject:mapper(obj, @(index)) ?: [NSNull null]];
+      index++;
     }
   }
   return retVal;
@@ -113,6 +121,10 @@
 
 -(id) collect:(id(^)(id obj))collector {
   return [self map:collector];
+}
+
+-(id) collectWithIndex:(id (^)(id, id))collector {
+  return [self mapWithIndex:collector];
 }
 
 -(id) reduce:(id)initial :(id(^)(id, id))reducer {
