@@ -56,6 +56,7 @@
 -(id) reject:(BOOL(^)(id obj))rejector;
 
 -(id) compact;
+-(id) deepCompact;
 
 -(id) max;
 -(id) min;

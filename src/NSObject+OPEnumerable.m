@@ -242,6 +242,34 @@
   return retVal;
 }
 
+-(id) deepCompact {
+  OPAssertEnumerable
+
+  BOOL isDictionary = OPContainerIsDictionaryLike();
+  id retVal = [self compact];
+
+  for (id i in (id<NSFastEnumeration>)self) {
+    id key = nil;
+    NSObject *value = nil;
+    if (isDictionary) {
+      key = i;
+      value = [retVal objectForKey:key];
+    } else {
+      value = i;
+    }
+
+    if ([value conformsToProtocol:@protocol(NSFastEnumeration)] && [value respondsToSelector:@selector(compact)]) {
+      if (isDictionary) {
+        [retVal setObject:[value deepCompact] forKey:key];
+      } else {
+        NSUInteger index = [retVal indexOfObject:value];
+        [retVal replaceObjectAtIndex:index withObject:[value deepCompact]];
+      }
+    }
+  }
+  return retVal;
+}
+
 -(id) max {
   OPAssertEnumerable
 
