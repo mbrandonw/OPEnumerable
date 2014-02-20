@@ -60,6 +60,8 @@
 
 -(id) max;
 -(id) min;
+-(id) max:(NSString*)keyPath;
+-(id) min:(NSString*)keyPath;
 
 /**
  * Partition the object into two sets.

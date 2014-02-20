@@ -300,6 +300,14 @@
   return retVal;
 }
 
+-(id) max:(NSString*)keyPath {
+  return [[self valueForKeyPath:keyPath] max];
+}
+
+-(id) min:(NSString*)keyPath {
+  return [[self valueForKeyPath:keyPath] min];
+}
+
 -(NSDictionary*) partition:(BOOL(^)(id obj))partitioner {
   OPAssertEnumerable
 
