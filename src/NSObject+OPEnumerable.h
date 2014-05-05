@@ -25,7 +25,7 @@
 @interface NSObject (OPEnumerable)
 
 -(void) each:(void(^)(id obj))iterator;
--(void) eachWithIndex:(void(^)(id obj, id index))iterator;
+-(void) eachWithIndex:(void(^)(id obj, id idxObject))iterator;
 
 -(BOOL) all:(BOOL(^)(id obj))block;
 -(BOOL) any:(BOOL(^)(id obj))block;

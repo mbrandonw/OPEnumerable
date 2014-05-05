@@ -34,7 +34,7 @@
   }];
 }
 
--(void) eachWithIndex:(void(^)(id obj, id index))iterator {
+-(void) eachWithIndex:(void(^)(id obj, id idxObject))iterator {
   OPAssertEnumerable
 
   BOOL isDictionary = OPContainerIsDictionaryLike();
