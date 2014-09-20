@@ -6,6 +6,6 @@ Pod::Spec.new do |spec|
   spec.authors      = { 'Brandon Williams' => 'mbw234@gmail.com' }
   spec.summary      = ''
   spec.source       = { :git => 'https://github.com/mbrandonw/OPEnumerable.git' }
-  spec.source_files = '*.{h,m}'
+  spec.source_files = 'src/*.{h,m}'
   spec.requires_arc = true
 end
